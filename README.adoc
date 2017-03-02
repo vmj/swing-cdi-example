@@ -1,0 +1,50 @@
+= Swing + CDI
+
+This example shows one way to use asynchronous CDI events in Java SE Swing application.
+
+Make sure you have Java 8 installed,
+then run the application using the provided Gradle wrapper:
+
+  ./gradlew run
+
+Or, if you're on Windows, use `./gradlew.bat run` instead.
+
+In the application, click the button to add a new list item.
+The list item will be "loaded" in a background thread.
+
+There's a pool of four threads allocated for the background tasks.
+So, click five or more times rather quickly, and you will see them getting queued up.
+The background workers will work through the queue eventually -- assuming you will stop clicking.
+
+== How it works
+
+The important thing is that the Swing UI is built synchronously before the `main` method ends.
+This is achieved as follows:
+
+The `Main` class, after setting up the CDI container, fires the `BootEvent` synchronously.
+Because the `App` class observers the `BootEvent` synchronously,
+and has the `UI` instance injected into the observer method,
+the CDI container will instantiate the `UI` class before calling the `App.onBoot` method.
+In the `UI` post-construct method,
+the `SwingUtilities.invokeAndWait` is used to construct the components synchronously.
+
+Note: The post-construct method is used because it depends on the field injected beans.
+Those would not be available in the constructor.
+
+I.e. before the main thread exits the main method, the `App` and `UI` classes have been instantiated,
+satisfying the requirement to use Swing thread for all Swing things,
+and still using CDI to instantiate and wire up the application classes.
+
+== CDI event usage
+
+This application is using asynchronous CDI events when communicating from Swing UI to the "backend" application.
+The rationale here is that the UI should not wait for the backend.
+I.e. the CDI event handling should not happen in the Swing event dispatch thread.
+
+When communicating back to the UI, the backend sends the CDI events synchronously.
+The UI is converting them to a `invokeLater` calls anyway, in order to do the work in the Swing thread,
+so asynchronous CDI events would just waste context switches.
+
+A naming convention is used to separate the two concepts:
+UI actions are sending "commands" to the backend,
+and the backend is sending events to the UI.
