@@ -1,8 +1,8 @@
 package fi.linuxbox.cdi.swing.core;
 
-import fi.linuxbox.cdi.swing.core.commands.AddNewRowAction;
-import fi.linuxbox.cdi.swing.core.events.NewRowAddedEvent;
-import fi.linuxbox.cdi.swing.core.events.RowStateChangedEvent;
+import fi.linuxbox.cdi.swing.core.commands.AddRowAction;
+import fi.linuxbox.cdi.swing.core.events.RowAddedEvent;
+import fi.linuxbox.cdi.swing.core.events.RowUpdatedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +25,7 @@ public class UI {
     private JFrame mainWindow;
     private DefaultTableModel tableModel;
 
-    @Inject private AddNewRowAction addNewRowAction;
+    @Inject private AddRowAction addRowAction;
 
     @PostConstruct
     private void setup() {
@@ -42,7 +42,7 @@ public class UI {
 
                 tableModel = new DefaultTableModel(rows, cols);
 
-                mainWindow.add(new JButton(addNewRowAction), NORTH);
+                mainWindow.add(new JButton(addRowAction), NORTH);
                 mainWindow.add(new JScrollPane(new JTable(tableModel)));
 
                 log.info("finished constructing: main window");
@@ -57,11 +57,11 @@ public class UI {
         exec("show main window", () -> mainWindow.setVisible(true));
     }
 
-    private void onRowAdded(@Observes NewRowAddedEvent event) {
+    private void onRowAdded(@Observes RowAddedEvent event) {
         exec("add row", () -> tableModel.addRow(new String[] { event.getRowId(), event.getState() }));
     }
 
-    private void onRowStateChanged(@Observes RowStateChangedEvent event) {
+    private void onRowStateChanged(@Observes RowUpdatedEvent event) {
         exec("set row", () -> {
             for (int row = 0; row < tableModel.getRowCount(); row++) {
                 if (event.getRowId().equals(tableModel.getValueAt(row, ROW_ID_COLUMN))) {

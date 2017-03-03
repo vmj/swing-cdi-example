@@ -3,8 +3,8 @@ package fi.linuxbox.cdi.swing.core.commands;
 /**
  * Swing action for adding a new row.
  */
-public class AddNewRowAction extends AbstractCdiAction<AddNewRowCommand> {
-    public AddNewRowAction() {
+public class AddRowAction extends AbstractCdiAction<AddRowCommand> {
+    public AddRowAction() {
         super("Add Row", "new-row");
     }
 }

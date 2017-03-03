@@ -1,13 +1,15 @@
 package fi.linuxbox.cdi.swing.core.events;
 
 /**
- * Created by vmj on 02/03/2017.
+ * A CDI event to inform that a new row was added.
+ *
+ * (This app doesn't really persist anything, so it wasn't really added to anything.)
  */
-public class RowStateChangedEvent {
+public class RowAddedEvent {
     private final String rowId;
     private final String state;
 
-    public RowStateChangedEvent(String rowId, String state) {
+    public RowAddedEvent(String rowId, String state) {
         this.rowId = rowId;
         this.state = state;
     }

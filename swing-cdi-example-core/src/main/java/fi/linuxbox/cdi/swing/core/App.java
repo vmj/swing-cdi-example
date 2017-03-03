@@ -1,8 +1,8 @@
 package fi.linuxbox.cdi.swing.core;
 
-import fi.linuxbox.cdi.swing.core.commands.AddNewRowCommand;
-import fi.linuxbox.cdi.swing.core.events.NewRowAddedEvent;
-import fi.linuxbox.cdi.swing.core.events.RowStateChangedEvent;
+import fi.linuxbox.cdi.swing.core.commands.AddRowCommand;
+import fi.linuxbox.cdi.swing.core.events.RowAddedEvent;
+import fi.linuxbox.cdi.swing.core.events.RowUpdatedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,8 +22,8 @@ public class App {
     private static final ExecutorService threadPool = Executors.newFixedThreadPool(4);
     private static final Random random = new Random();
 
-    @Inject private Event<NewRowAddedEvent> newRowAddedEventEvent;
-    @Inject private Event<RowStateChangedEvent> rowStateChangedEventEvent;
+    @Inject private Event<RowAddedEvent> rowAdded;
+    @Inject private Event<RowUpdatedEvent> rowUpdated;
 
     public void onBoot(@Observes BootEvent e, UI ui) {
         log.info("starting cdi-event: boot");
@@ -31,32 +31,41 @@ public class App {
         log.info("finished cdi-event: boot");
     }
 
-    public void onAddNewRow(@ObservesAsync AddNewRowCommand command) {
+    public void onAddNewRow(@ObservesAsync AddRowCommand command) {
         log.info("starting cdi-event: add new row");
 
         final String rowId = UUID.randomUUID().toString();
 
-        newRowAddedEventEvent.fire(new NewRowAddedEvent(rowId, "IN QUEUE"));
+        rowAdded.fire(new RowAddedEvent(rowId, "IN QUEUE"));
 
         threadPool.submit(() -> {
             log.info("starting worker: " + Thread.currentThread().getId());
-            rowStateChangedEventEvent.fire(new RowStateChangedEvent(rowId, "0 %"));
-            //ui.setRow(rowId, "0 %");
+
+            rowUpdated.fire(new RowUpdatedEvent(rowId, "0 %"));
+
             final int totalDuration = 1000 + random.nextInt(4000); // 1-5 secs
             int leftToDo = totalDuration;
             while (leftToDo > 0) {
-                int sleep = Math.min(250, leftToDo);
-                leftToDo -= sleep;
+                final int sleep = Math.min(250, leftToDo);
                 try {
                     Thread.sleep(sleep);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                    leftToDo = 0;
+                    break;
                 }
-                int percent = 100 - (int)((leftToDo / (double)totalDuration) * 100);
-                rowStateChangedEventEvent.fire(new RowStateChangedEvent(rowId, String.valueOf(percent) + " %"));
+
+                leftToDo -= sleep;
+                final int percent = 100 - (int)((leftToDo / (double)totalDuration) * 100);
+
+                rowUpdated.fire(new RowUpdatedEvent(rowId, String.valueOf(percent) + " %"));
             }
-            rowStateChangedEventEvent.fire(new RowStateChangedEvent(rowId, "FINISHED"));
+
+            if (leftToDo == 0) {
+                rowUpdated.fire(new RowUpdatedEvent(rowId, "FINISHED"));
+            } else {
+                rowUpdated.fire(new RowUpdatedEvent(rowId, "FAILED"));
+            }
+
             log.info("finished worker: " + Thread.currentThread().getId());
         });
         log.info("finished cdi-event: command");
