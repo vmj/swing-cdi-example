@@ -18,6 +18,6 @@ dependencies {
     compile 'org.slf4j:slf4j-api:1.7.25'
     compile 'javax.enterprise:cdi-api:2.0'
 
-    runtime 'ch.qos.logback:logback-classic:1.2.1'
+    runtime 'ch.qos.logback:logback-classic:1.2.3'
     runtime 'org.jboss.weld.se:weld-se-core:3.0.0.CR1'
 }
