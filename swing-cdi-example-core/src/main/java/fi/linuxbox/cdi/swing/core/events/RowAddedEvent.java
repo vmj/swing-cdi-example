@@ -5,20 +5,8 @@ package fi.linuxbox.cdi.swing.core.events;
  *
  * (This app doesn't really persist anything, so it wasn't really added to anything.)
  */
-public class RowAddedEvent {
-    private final String rowId;
-    private final String state;
-
-    public RowAddedEvent(String rowId, String state) {
-        this.rowId = rowId;
-        this.state = state;
-    }
-
-    public String getRowId() {
-        return rowId;
-    }
-
-    public String getState() {
-        return state;
+public class RowAddedEvent extends AbstractRowEvent {
+    public RowAddedEvent(final String rowId, final String state) {
+        super(rowId, state);
     }
 }

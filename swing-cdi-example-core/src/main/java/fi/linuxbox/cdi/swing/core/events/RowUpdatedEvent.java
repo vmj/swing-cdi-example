@@ -1,22 +1,10 @@
 package fi.linuxbox.cdi.swing.core.events;
 
 /**
- * Created by vmj on 02/03/2017.
+ * A CDI event to inform that a row was updated.
  */
-public class RowUpdatedEvent {
-    private final String rowId;
-    private final String state;
-
-    public RowUpdatedEvent(String rowId, String state) {
-        this.rowId = rowId;
-        this.state = state;
-    }
-
-    public String getRowId() {
-        return rowId;
-    }
-
-    public String getState() {
-        return state;
+public class RowUpdatedEvent extends AbstractRowEvent {
+    public RowUpdatedEvent(final String rowId, final String state) {
+        super(rowId, state);
     }
 }

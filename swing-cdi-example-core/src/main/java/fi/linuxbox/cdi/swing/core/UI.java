@@ -1,6 +1,7 @@
 package fi.linuxbox.cdi.swing.core;
 
 import fi.linuxbox.cdi.swing.core.commands.AddRowAction;
+import fi.linuxbox.cdi.swing.core.events.AbstractRowEvent;
 import fi.linuxbox.cdi.swing.core.events.RowAddedEvent;
 import fi.linuxbox.cdi.swing.core.events.RowUpdatedEvent;
 import org.slf4j.Logger;
@@ -12,6 +13,9 @@ import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static java.awt.BorderLayout.NORTH;
 
@@ -58,17 +62,19 @@ public class UI {
     }
 
     private void onRowAdded(@Observes RowAddedEvent event) {
-        exec("add row", () -> tableModel.addRow(new String[] { event.getRowId(), event.getState() }));
+        Stream.of(event)
+                .map(AbstractRowEvent::asRow)
+                .forEach(row -> exec("add row", () -> tableModel.addRow(row)));
     }
 
     private void onRowStateChanged(@Observes RowUpdatedEvent event) {
         exec("set row", () -> {
-            for (int row = 0; row < tableModel.getRowCount(); row++) {
-                if (event.getRowId().equals(tableModel.getValueAt(row, ROW_ID_COLUMN))) {
-                    tableModel.setValueAt(event.getState(), row, STATE_COLUMN);
-                    break;
-                }
-            }
+            // This loop has to live in Swing thread
+            IntStream.range(0, tableModel.getRowCount())
+                    .parallel()
+                    .filter(row -> tableModel.getValueAt(row, ROW_ID_COLUMN).equals(event.getRowId()))
+                    .findFirst()
+                    .ifPresent(row -> tableModel.setValueAt(event.getState(), row, STATE_COLUMN));
         });
     }
 
