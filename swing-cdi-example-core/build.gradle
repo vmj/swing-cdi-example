@@ -10,6 +10,6 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.slf4j:slf4j-api:1.7.24'
+    implementation 'org.slf4j:slf4j-api:1.7.25'
     implementation 'javax.enterprise:cdi-api:2.0-PFD'
 }
