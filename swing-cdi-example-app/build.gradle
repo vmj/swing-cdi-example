@@ -16,7 +16,7 @@ dependencies {
     compile project(':swing-cdi-example-core') // compile dep just for the BootEvent; otherwise just runtime dep
 
     compile 'org.slf4j:slf4j-api:1.7.25'
-    compile 'javax.enterprise:cdi-api:2.0-PFD'
+    compile 'javax.enterprise:cdi-api:2.0'
 
     runtime 'ch.qos.logback:logback-classic:1.2.1'
     runtime 'org.jboss.weld.se:weld-se-core:3.0.0.CR1'
