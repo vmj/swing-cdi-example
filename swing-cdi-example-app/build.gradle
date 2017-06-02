@@ -19,5 +19,5 @@ dependencies {
     compile 'javax.enterprise:cdi-api:2.0'
 
     runtime 'ch.qos.logback:logback-classic:1.2.3'
-    runtime 'org.jboss.weld.se:weld-se-core:3.0.0.CR2'
+    runtime 'org.jboss.weld.se:weld-se-core:3.0.0.Final'
 }
