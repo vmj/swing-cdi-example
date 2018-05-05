@@ -1,6 +1,5 @@
-package fi.linuxbox.cdi.swing.app;
+package fi.linuxbox.cdi.swing.core;
 
-import fi.linuxbox.cdi.swing.core.BootEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +17,9 @@ public class Main {
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             log.info("starting shutdown");
-            //seContainer.close(); // Weld already adds a shutdown hook for itself
+            // Both OpenWebBeans and Weld seem to shutdown on their own.
+            // Weld even prints a stack trace if we close it.
+            //seContainer.close();
             log.info("finished shutdown");
         }));
 

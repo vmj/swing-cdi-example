@@ -6,18 +6,17 @@ apply plugin: 'application'
 
 sourceCompatibility = 1.8
 
-mainClassName = 'fi.linuxbox.cdi.swing.app.Main'
+mainClassName = 'fi.linuxbox.cdi.swing.core.Main'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    compile project(':swing-cdi-example-core') // compile dep just for the BootEvent; otherwise just runtime dep
-
-    compile 'org.slf4j:slf4j-api:1.7.25'
-    compile 'javax.enterprise:cdi-api:2.0'
-
+    // In this app, package the application implementation
+    runtime project(':swing-cdi-example-core')
+    // and a logging implementation
     runtime 'ch.qos.logback:logback-classic:1.2.3'
+    // and a CDI implementation
     runtime 'org.jboss.weld.se:weld-se-core:3.0.4.Final'
 }
