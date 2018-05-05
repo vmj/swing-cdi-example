@@ -1,4 +1,4 @@
 rootProject.name = 'swing-cdi-example'
 include 'swing-cdi-example-core'
-include 'swing-cdi-example-app'
+include 'swing-cdi-example-weld-app'
 
