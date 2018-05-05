@@ -28,8 +28,8 @@ abstract public class AbstractCdiAction<T> extends AbstractAction {
 
     @Override
     public void actionPerformed(final ActionEvent e) {
-        log.info("starting swing-action: $s", e.getActionCommand());
+        log.info("starting swing-action: {}", e.getActionCommand());
         event.fireAsync(command);
-        log.info("finished swing-action: $s", e.getActionCommand());
+        log.info("finished swing-action: {}", e.getActionCommand());
     }
 }
