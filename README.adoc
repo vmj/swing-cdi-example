@@ -3,11 +3,16 @@
 This example shows one way to use asynchronous CDI events in Java SE Swing application.
 
 Make sure you have Java 8 installed,
-then run the application using the provided Gradle wrapper:
+then run the application using the provided Gradle wrapper.
+You can run the app in a CDI container provided by OpenWebBeans:
 
-  ./gradlew run
+  ./gradlew owbRun
 
-Or, if you're on Windows, use `./gradlew.bat run` instead.
+or, alternatively, in a CDI container provided by Weld:
+
+  ./gradlew weldRun
+
+Note: if you're on Windows, use `./gradlew.bat` instead.
 
 In the application, click the button to add a new list item.
 The list item will be "loaded" in a background thread.

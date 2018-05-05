@@ -1,0 +1,7 @@
+// Add alias tasks for swing-cdi-example-owb-app:run
+// and swing-cdi-example-weld-app:run.
+['owb', 'weld'].each { def cdi ->
+    task("${cdi}Run") {
+        dependsOn(":swing-cdi-example-${cdi}-app:run")
+    }
+}
