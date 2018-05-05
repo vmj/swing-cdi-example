@@ -68,6 +68,6 @@ public class App {
 
             log.info("finished worker: " + Thread.currentThread().getId());
         });
-        log.info("finished cdi-event: command");
+        log.info("finished cdi-event: add new row");
     }
 }
