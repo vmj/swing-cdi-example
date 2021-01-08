@@ -2,7 +2,7 @@
 
 This example shows one way to use asynchronous CDI events in Java SE Swing application.
 
-Make sure you have Java 8 installed,
+Make sure you have Java 8 or newer installed (tested with Java 15),
 then run the application using the provided Gradle wrapper.
 You can run the app in a CDI container provided by OpenWebBeans:
 

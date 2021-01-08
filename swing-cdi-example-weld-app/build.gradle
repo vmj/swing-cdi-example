@@ -14,9 +14,9 @@ repositories {
 
 dependencies {
     // In this app, package the application implementation
-    runtime project(':swing-cdi-example-core')
+    runtimeOnly project(':swing-cdi-example-core')
     // and a logging implementation
-    runtime 'ch.qos.logback:logback-classic:1.2.3'
+    runtimeOnly 'ch.qos.logback:logback-classic:1.2.3'
     // and a CDI implementation
-    runtime 'org.jboss.weld.se:weld-se-core:3.0.4.Final'
+    runtimeOnly 'org.jboss.weld.se:weld-se-core:3.1.5.SP1'
 }

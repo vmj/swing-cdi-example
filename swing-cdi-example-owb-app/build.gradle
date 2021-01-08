@@ -14,12 +14,9 @@ repositories {
 
 dependencies {
     // In this app, package the application implementation
-    runtime project(':swing-cdi-example-core')
+    runtimeOnly project(':swing-cdi-example-core')
     // and a logging implementation
-    runtime 'ch.qos.logback:logback-classic:1.2.3'
+    runtimeOnly 'ch.qos.logback:logback-classic:1.2.3'
     // and a CDI implementation
-    runtimeOnly 'org.apache.openwebbeans:openwebbeans-se:2.0.5'
-    // Nothing gets deployed without this
-    // (weld has it, too, but with weld we get it transitively)
-    runtimeOnly 'javax.annotation:javax.annotation-api:1.3.2'
+    runtimeOnly 'org.apache.openwebbeans:openwebbeans-se:2.0.21'
 }
